@@ -31,5 +31,4 @@ public class StateCensusCSV {
 		return "StateCensusCSV [state=" + state + ", population=" + population + ", areaInSqKm=" + areaInSqKm
 				+ ", densityPerSqKm=" + densityPerSqKm + "]";
 	}
-
 }
