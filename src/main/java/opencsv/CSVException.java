@@ -1,4 +1,4 @@
-package com.cg;
+package opencsv;
 
 public class CSVException extends Exception {
 
