@@ -12,7 +12,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
-import opencsv.*;
+import commonscsv.CSVBuilderFactory;
+import commonscsv.CSVException;
+import commonscsv.ICSVBuilder;
 
 public class StateCensusAnalyzer {
 	public Path csvFilePath;

@@ -28,4 +28,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     
     compile group: 'com.opencsv', name: 'opencsv', version: '4.1'
+    
+    compile group: 'org.apache.commons', name: 'commons-csv', version: '1.8'
 }
