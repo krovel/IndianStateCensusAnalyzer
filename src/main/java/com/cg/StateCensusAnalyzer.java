@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
+import opencsv.*;
+
 public class StateCensusAnalyzer {
 	public Path csvFilePath;
 
