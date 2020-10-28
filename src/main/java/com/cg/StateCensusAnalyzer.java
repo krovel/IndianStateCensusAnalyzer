@@ -3,6 +3,7 @@
  */
 package com.cg;
 
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -11,10 +12,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
-
-import commonscsv.CSVBuilderFactory;
-import commonscsv.CSVException;
-import commonscsv.ICSVBuilder;
 
 public class StateCensusAnalyzer {
 	public Path csvFilePath;
@@ -27,7 +24,7 @@ public class StateCensusAnalyzer {
 
 		try (Reader reader = Files.newBufferedReader(csvFilePath)) {
 			ICSVBuilder<StateCensusCSV> csvBuilder = CSVBuilderFactory.createCSVBuilder();
-			Iterator<StateCensusCSV> stateCensusCSVIterator = csvBuilder.getCSVIterator(reader, StateCensusCSV.class);
+			List<StateCensusCSV> stateCensusCSVList = csvBuilder.getCSVList(reader, StateCensusCSV.class);
 
 			String[] expectedHeader = { "State", "Population", "Area In Square Km", "Density Per Square Km" };
 			if (isWrongDelimiter(expectedHeader, csvFilePath)) {
@@ -36,7 +33,7 @@ public class StateCensusAnalyzer {
 			if (isWrongHeader(expectedHeader, csvFilePath)) {
 				throw new StateCensusAnalyzerException("Invalid CSV header", StateCensusAnalyzerException.ExceptionType.INCORRECT_CSV_HEADER);
 			}
-			return getCount(stateCensusCSVIterator);
+			return stateCensusCSVList.size();
 		} catch (IOException | CSVException e) {
 			throw new StateCensusAnalyzerException("Invalid path entered", StateCensusAnalyzerException.ExceptionType.INCORRECT_PATH);
 		}
