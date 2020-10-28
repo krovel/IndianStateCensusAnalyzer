@@ -25,12 +25,8 @@ public class StateCensusAnalyzer {
 
 		try (Reader reader = Files.newBufferedReader(csvFilePath)) {
 			Iterator<StateCensusCSV> stateCensusCSVIterator = getCSVIterator(reader, StateCensusCSV.class);
-			Iterable<StateCensusCSV> csvIterable = () -> stateCensusCSVIterator;
-			int noOfEnteries = (int) StreamSupport.stream(csvIterable.spliterator(), false)
-												  .count();
 
 			String[] expectedHeader = { "State", "Population", "Area In Square Km", "Density Per Square Km" };
-
 			if (isWrongDelimiter(expectedHeader, csvFilePath)) {
 				throw new StateCensusAnalyzerException("Invalid delimiter",
 						StateCensusAnalyzerException.ExceptionType.INCORRECT_DELIMITER);
@@ -39,7 +35,7 @@ public class StateCensusAnalyzer {
 				throw new StateCensusAnalyzerException("Invalid CSV header",
 						StateCensusAnalyzerException.ExceptionType.INCORRECT_CSV_HEADER);
 			}
-			return noOfEnteries;
+			return getCount(stateCensusCSVIterator);
 		} catch (IOException e) {
 			throw new StateCensusAnalyzerException("Invalid path entered",
 					StateCensusAnalyzerException.ExceptionType.INCORRECT_PATH);
@@ -50,9 +46,6 @@ public class StateCensusAnalyzer {
 
 		try (Reader reader = Files.newBufferedReader(csvFilePath)) {
 			Iterator<CSVStates> stateCodeCSVIterator = getCSVIterator(reader, CSVStates.class);
-			Iterable<CSVStates> csvIterable = () -> stateCodeCSVIterator;
-			int noOfEnteries = (int) StreamSupport.stream(csvIterable.spliterator(), false)
-												  .count();
 
 			String[] expectedHeader = { "State Name", "State Code" };
 			if (isWrongDelimiter(expectedHeader, csvFilePath)) {
@@ -63,7 +56,7 @@ public class StateCensusAnalyzer {
 				throw new StateCensusAnalyzerException("Invalid CSV header",
 						StateCensusAnalyzerException.ExceptionType.INCORRECT_CSV_HEADER);
 			}
-			return noOfEnteries;
+			return getCount(stateCodeCSVIterator);
 		} catch (IOException e) {
 			throw new StateCensusAnalyzerException("Invalid path entered",
 					StateCensusAnalyzerException.ExceptionType.INCORRECT_PATH);
@@ -81,6 +74,12 @@ public class StateCensusAnalyzer {
 			throw new StateCensusAnalyzerException("Invalid state present",
 					StateCensusAnalyzerException.ExceptionType.INCORRECT_STATE);
 		}
+	}
+
+	private <E> int getCount(Iterator<E> csvIterator) {
+		Iterable<E> csvIterable = () -> csvIterator;
+		int noOfEnteries = (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
+		return noOfEnteries;
 	}
 
 	public boolean isWrongHeader(String[] expectedHeader, Path csvFilePath) throws StateCensusAnalyzerException {
