@@ -17,6 +17,8 @@ public class SateCensusAnalyzerTest {
 	private static final String CSV_FILE_WRONG_DELIMITER_PATH = "D:/Capgemini_java_training/IndianStateCensusAnalyzer/StateCensusCSVInvalidDelimiter.csv";
 	private static final String CSV_FILE_WRONG_HEADER_PATH = "D:/Capgemini_java_training/IndianStateCensusAnalyzer/StateCensusCSVInvalidHeader.csv";
 	private static final String STATE_CENSUS_JSON_FILE_SORTED_BY_POPULATION = "D:/Capgemini_java_training/IndianStateCensusAnalyzer/SortedByPopulationStateCensusJSON.json";
+	private static final String STATE_CENSUS_JSON_FILE_SORTED_BY_AREA = "D:/Capgemini_java_training/IndianStateCensusAnalyzer/SortedByAreaStateCensusJSON.json";
+
 
 	
 	@Test
@@ -111,7 +113,19 @@ public class SateCensusAnalyzerTest {
 			Assert.assertEquals("Haryana", stateCensusDataArray[4].state);
 		}catch (StateCensusAnalyzerException e) { }
 	}
-
+	@Test
+	public void givenStateCensusCSVData_WhenSortedByArea_ShouldReturnSortedResult() {
+		try {
+			StateCensusAnalyzer censusAnalyzer = new StateCensusAnalyzer(Paths.get(STATE_CENSUS_CSV_FILE_PATH));
+			censusAnalyzer.readStateCensusCSVData();
+			String stateCensusDataSortedByArea = censusAnalyzer.getAreaWiseStateCensusSortedData(Paths.get(STATE_CENSUS_JSON_FILE_SORTED_BY_AREA));
+			StateCensusCSV[] stateCensusDataArray = new Gson().fromJson(stateCensusDataSortedByArea, StateCensusCSV[].class);
+			Assert.assertEquals("Rajasthan", stateCensusDataArray[0].state);
+			Assert.assertEquals("Jammu and Kashmir", stateCensusDataArray[4].state);
+			Assert.assertEquals(29, stateCensusDataArray.length);
+		} catch (StateCensusAnalyzerException e) { }
+	}
+	
 	private static final String STATE_CODE_CSV_FILE_PATH = "D:/Capgemini_java_training/IndianStateCensusAnalyzer/StateCodeCSV.csv";
 	private static final String WRONG_STATE_CODE_CSV_FILE_PATH = "D:/Capgemini_java_training/IndianStateCensusAnalyzer/src/StateCodeCSV.csv";
 	private static final String STATE_CODE_CSV_FILE_WRONG_DELIMITER_PATH = "D:/Capgemini_java_training/IndianStateCensusAnalyzer/StateCodeCSVInvalidDelimiter.csv";
