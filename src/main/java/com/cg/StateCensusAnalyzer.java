@@ -100,6 +100,14 @@ public class StateCensusAnalyzer {
 		String sortedStateCensusJson = new Gson().toJson(stateCensusCSVList);
 		return sortedStateCensusJson;
 	}
+	public String getDensityWiseStateCensusSortedData() throws StateCensusAnalyzerException {
+		if (stateCensusCSVList == null || stateCensusCSVList.size() == 0)
+			throw new StateCensusAnalyzerException("No CSV Data Found", StateCensusAnalyzerException.ExceptionType.NO_DATA);		
+		Comparator<StateCensusCSV> stateCensusComparator = Comparator.comparing(stateCensus -> stateCensus.densityPerSqKm);
+		this.sortDescending(stateCensusCSVList, stateCensusComparator);
+		String sortedStateCensusJson = new Gson().toJson(stateCensusCSVList);
+		return sortedStateCensusJson;
+	}
 
 	public String getPopulationWiseStateCensusSortedData(Path stateCensusJsonFileSorted) throws StateCensusAnalyzerException {
 		if(stateCensusCSVList == null || stateCensusCSVList.size() == 0)

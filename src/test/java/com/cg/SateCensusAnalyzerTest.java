@@ -100,6 +100,17 @@ public class SateCensusAnalyzerTest {
 			Assert.assertEquals(29, stateCensusDataArray.length);
 		} catch (StateCensusAnalyzerException e) { }
 	}
+	@Test
+	public void givenStateCensusCSVData_WhenSortedByDensity_ShouldReturnSortedResult() {
+		try {
+			StateCensusAnalyzer censusAnalyzer = new StateCensusAnalyzer(Paths.get(STATE_CENSUS_CSV_FILE_PATH));
+			censusAnalyzer.readStateCensusCSVData();
+			String stateCensusDataSortedByDensity = censusAnalyzer.getDensityWiseStateCensusSortedData();
+			StateCensusCSV[] stateCensusDataArray = new Gson().fromJson(stateCensusDataSortedByDensity, StateCensusCSV[].class);
+			Assert.assertEquals("Bihar", stateCensusDataArray[0].state);
+			Assert.assertEquals("Haryana", stateCensusDataArray[4].state);
+		}catch (StateCensusAnalyzerException e) { }
+	}
 
 	private static final String STATE_CODE_CSV_FILE_PATH = "D:/Capgemini_java_training/IndianStateCensusAnalyzer/StateCodeCSV.csv";
 	private static final String WRONG_STATE_CODE_CSV_FILE_PATH = "D:/Capgemini_java_training/IndianStateCensusAnalyzer/src/StateCodeCSV.csv";
